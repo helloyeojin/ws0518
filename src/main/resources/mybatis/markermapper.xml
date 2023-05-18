@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.myadmin.mapper.MarkerMapper">
+
+    <select id="search" parameterType="markerSearch" resultType="marker">
+        SELECT * FROM marker
+        <where>
+            <if test = "title != null and !title.equals('')">
+                AND title LIKE '%'||#{title}||'%'
+            </if>
+            <if test="star != null and !star.equals('')">
+                star = #{star}
+            </if>
+            <if test = "writer != null and !writer.equals('')">
+                AND writer LIKE '%'||#{writer}||'%'
+            </if>
+            <if test = "keyword != null and !keyword.equals('')">
+                AND keyword LIKE '%'||#{keyword}||'%'
+            </if>
+        </where>
+    </select>
+
+    <select id="select" parameterType="Integer" resultType="Marker">
+        SELECT *
+        FROM marker
+        WHERE id=#{id}
+    </select>
+    <select id="selectall" resultType="Marker">
+        SELECT *
+        FROM marker
+    </select>
+    <insert id="insert" parameterType="Marker">
+        INSERT INTO marker VALUES (marker_seq.NEXTVAL,#{title},#{lat},#{lng},#{img},#{star},#{detail},#{writer},#{keyword})
+    </insert>
+    <update id="update" parameterType="Marker">
+        UPDATE marker
+        SET writer=#{writer},keyword=#{keyword},title=#{title},lat=#{lat}, lng=#{lng}, img=#{img}
+            , star=#{star}, detail=#{detail}
+        WHERE id=#{id}
+    </update>
+    <delete id="delete" parameterType="Integer">
+        DELETE
+        FROM marker
+        WHERE id=#{id}
+    </delete>
+
+</mapper>
